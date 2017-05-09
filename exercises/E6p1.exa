@@ -1,0 +1,35 @@
+package de.zalando.akka.actors
+
+import akka.actor.ActorSystem
+import akka.testkit.{ImplicitSender, TestKit}
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+
+
+// Open the file LifeCycleActor and implement the below behaviour
+
+class E6p1Test extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Matchers with BeforeAndAfterAll {
+
+  "LifeCycleActor" must {
+
+    "Report all lifecycle event to parent" in {
+      val actor = system.actorOf(LifeCycleActor.props(self))
+      expectMsg("I'll Start ...")
+
+      actor ! "check"
+      expectMsg("checked")
+
+      actor ! new Exception("Big Fat Fake Error")
+      expectMsg("I'll Restart because: Big Fat Fake Error")
+      expectMsg("I've Restarted because: Big Fat Fake Error")
+
+      actor ! "stop"
+      expectMsg("I've been stopped, bye ...")
+    }
+
+
+  }
+
+  override def afterAll() = {
+    system.terminate()
+  }
+}

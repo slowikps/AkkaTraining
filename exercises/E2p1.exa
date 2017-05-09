@@ -1,0 +1,47 @@
+package de.zalando.akka.actors
+
+import akka.actor.ActorSystem
+import akka.pattern.ask
+import akka.testkit.{ImplicitSender, TestKit}
+import akka.util.Timeout
+import de.zalando.akka.AkkaError
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+// Open GreeterActor.scala and follow the instructions there
+
+class E2p1Test extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Matchers with BeforeAndAfterAll {
+
+  "SimpleActor" must {
+    "respond with GreetingReply when told GreetingRequest" in {
+      val simpleActor = system.actorOf(GreeterActor.props)
+
+      simpleActor ! GreetingRequest("Zalando")
+      expectMsg(GreetingReply("Hello Zalando"))
+    }
+
+    "respond with GreetingReply when asked GreetingRequest" in {
+      val simpleActor = system.actorOf(GreeterActor.props)
+
+      implicit val timeout = Timeout(2 seconds)
+      val result = simpleActor ? GreetingRequest("Zalando")
+
+      Await.result(result, 2 seconds) should equal(GreetingReply("Hello Zalando"))
+    }
+
+    "respond with AkkaError when told any undefined message" in {
+      val simpleActor = system.actorOf(GreeterActor.props)
+
+      simpleActor ! "Some Random message"
+      expectMsgPF() {
+        case AkkaError(_) => ""
+      }
+    }
+  }
+
+  override def afterAll() = {
+    system.terminate()
+  }
+}

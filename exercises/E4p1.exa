@@ -1,0 +1,26 @@
+package de.zalando.akka.actors
+
+import akka.actor.ActorSystem
+import akka.testkit.{ImplicitSender, TestKit}
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+
+class E4p1Test extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Matchers with BeforeAndAfterAll {
+
+  "TitleResolverActor" must {
+
+    "resolveTitleEnglish must return TitleResolved(Mr.) when calling resolveTitle(John)" in {
+
+      // Implement a unit test for the method TitleResolverActor.resolveTitle using TestActorRef
+      ???
+    }
+
+    "respond with TitleResolved(Mr.) when told ResolveTitle for John // Integration Test" in {
+      // Implement an integration test for the Actor TitleResolverActor using tell pattern
+      ???
+    }
+  }
+
+  override def afterAll() = {
+    system.terminate()
+  }
+}

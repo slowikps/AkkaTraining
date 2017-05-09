@@ -1,0 +1,28 @@
+package de.zalando.akka.actors
+
+import akka.actor.ActorSystem
+import akka.testkit.{ImplicitSender, TestKit}
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+
+class E1p1Test extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Matchers with BeforeAndAfterAll {
+
+  override def beforeAll() = {
+  }
+
+  "EchoActor" must {
+    "echos whatever message it receives" in {
+      /*
+        -There is an already implemented actor called EchoActor which echo back any message sent to it
+        -create an Actor instance of EchoActor
+        -Send this Actor a string by using: myActor ! "some string"
+        -expect to receive the same message using: expectMsg("some string")
+        */
+
+        ???
+    }
+  }
+
+  override def afterAll() = {
+    system.terminate()
+  }
+}

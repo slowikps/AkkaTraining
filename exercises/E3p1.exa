@@ -1,0 +1,43 @@
+package de.zalando.akka.actors
+
+import akka.actor.ActorSystem
+import akka.pattern.ask
+import akka.testkit.{ImplicitSender, TestKit}
+import akka.util.Timeout
+import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+// Open PoliteGreeterActor.scala and follow the instructions there
+
+class E3p1Test extends TestKit(ActorSystem("MySpec")) with ImplicitSender with WordSpecLike with Matchers with BeforeAndAfterAll {
+
+  "PoliteActor" must {
+
+    "respond with GreetingReply when told GreetingRequest for John including Mr." in {
+      val politeActor = system.actorOf(PoliteGreeterActor.props)
+
+      politeActor ! GreetingRequest("John")
+      expectMsg(GreetingReply("Hello Mr. John"))
+    }
+
+    "respond with GreetingReply when told GreetingRequest for Joanna including Mrs." in {
+      val politeActor = system.actorOf(PoliteGreeterActor.props)
+
+      politeActor ! GreetingRequest("Joanna")
+      expectMsg(GreetingReply("Hello Mrs. Joanna"))
+    }
+
+    "respond with GreetingReply when told GreetingRequest for Zalando including Company " in {
+      val politeActor = system.actorOf(PoliteGreeterActor.props)
+
+      politeActor ! GreetingRequest("Zalando")
+      expectMsg(GreetingReply("Hello Company Zalando"))
+    }
+  }
+
+  override def afterAll() = {
+    system.terminate()
+  }
+}
